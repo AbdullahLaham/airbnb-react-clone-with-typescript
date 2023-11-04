@@ -4,14 +4,13 @@ import Logo from './Logo'
 import Search from './Search'
 import UserMenu from './UserMenu'
 import Categories from './Categories'
+import { useSelector } from 'react-redux'
 
-interface NavbarProps {
-  currentUser?: any;
-}
 
-const Navbar: React.FC<NavbarProps> = ({
-  currentUser,
-}) => {
+
+const Navbar= () => {
+
+  const {currentUser} = useSelector((state: any) => state?.auth);
 
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>

@@ -16,9 +16,11 @@ const Counter: React.FC<CounterProps> = ({
     value,
     onChange,
 }) => {
+
     const onAdd = useCallback(() => {
         onChange(value + 1);
     }, [onChange, value]);
+
     const onReduce = useCallback(() => {
         if (value === 1) return 
         onChange(value - 1);
@@ -36,19 +38,7 @@ const Counter: React.FC<CounterProps> = ({
       <div
         onClick={onReduce}
         className="
-          w-10
-          h-10
-          rounded-full
-          border-[1px]
-          border-neutral-400
-          flex
-          items-center
-          justify-center
-          text-neutral-600
-          cursor-pointer
-          hover:opacity-80
-          transition
-        "
+          w-10 h-10 rounded-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition"
       >
         <AiOutlineMinus />
       </div>

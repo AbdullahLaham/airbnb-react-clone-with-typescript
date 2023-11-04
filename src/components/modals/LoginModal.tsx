@@ -148,6 +148,7 @@ const LoginModal = () => {
       dispatch(login({...data}));
       toast.success("user login successfully");
       setIsLoading(false);
+      loginModal.onClose();
 
     }  catch(error) {
       toast.error("something went wrong");

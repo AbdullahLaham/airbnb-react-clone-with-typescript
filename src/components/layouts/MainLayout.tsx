@@ -13,7 +13,7 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
   return (
     <div>
 
-      <Navbar currentUser={currentUser} />
+      <Navbar />
       <LoginModal />
       <RegisterModal />
       <RentModal currentUser={currentUser} />

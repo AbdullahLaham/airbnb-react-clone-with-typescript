@@ -131,6 +131,8 @@ const RegisterModal = () => {
           dispatch(signUp(data));
           toast.success("user created successfully");
           setIsLoading(false);
+          registerModal.onClose();
+
         }  catch(error) {
           toast.error("something went wrong");
         } 

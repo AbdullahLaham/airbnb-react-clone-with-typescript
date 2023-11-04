@@ -1,10 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './auth/authSlice'
+import authReducer from './auth/authSlice';
+import listingReducer from './listings/listingsSlice';
+import uploadReducer from './upload/uploadSlice'
 import { useDispatch } from 'react-redux';
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer
+    auth: authReducer,
+    listings: listingReducer,
+    uploads: uploadReducer,
+
+
   },
 });
 

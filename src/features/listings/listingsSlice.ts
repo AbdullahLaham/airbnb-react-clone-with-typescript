@@ -41,8 +41,8 @@ export const getListings = createAsyncThunk('listings/all-listings', async (user
 
 })
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const listingsSlice = createSlice({
+  name: 'listings',
   initialState,
   reducers: {
     
@@ -96,4 +96,4 @@ export const authSlice = createSlice({
 // Action creators are generated for each case reducer function
 // export const { increment, decrement, incrementByAmount } = authSlice.actions
 
-export default authSlice.reducer;
+export default listingsSlice.reducer;
