@@ -26,6 +26,7 @@ import Heading from '../Heading';
 import useLoginModal from '../../hooks/useLoginModal';
 import useAuthStore from '../../hooks/useAuthStore';
 import { useAppDispatch } from '../../features/store';
+import { useSelector } from 'react-redux';
 // import { Input } from 'postcss';
 
 const RegisterModal = () => {
@@ -53,6 +54,7 @@ const RegisterModal = () => {
     });
     console.log(registerModal.isOpen, 'yyyyyyyy');
 
+    const {currentUser} = useSelector((state: any) => state?.auth)
 
 
     const toggle = useCallback(() => {
@@ -123,20 +125,20 @@ const RegisterModal = () => {
     </div>
   )
 
-    let onSubmit: SubmitHandler<FieldValues> = (data) => {
+    let onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setIsLoading(true);
         // const {name, email, password} = data;
         try {
-          
-          dispatch(signUp(data));
-          toast.success("user created successfully");
-          setIsLoading(false);
-          registerModal.onClose();
 
+          dispatch(signUp(data));
+          setIsLoading(false);
+             
         }  catch(error) {
           toast.error("something went wrong");
         } 
     }
+
+    
   return (
     <Modal
       disabled={isLoading}

@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authService from './authService';
+import toast from 'react-hot-toast';
 
 type stateType = {
     currentUser: any,
@@ -68,6 +69,9 @@ export const authSlice = createSlice({
         state.isError = false ;
         state.isSuccess = true;
         state.currentUser = action?.payload;
+        if (state?.isSuccess) {
+            toast.success("user entered successfully");
+        }
     })
 
     .addCase(login.rejected,(state, action: PayloadAction<any>) => {
@@ -75,6 +79,9 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.currentUser = null;
+        if (state?.isError) {
+            toast.error("something went wrong");
+        }
         // state.message = action.error;
     })
 
@@ -89,6 +96,9 @@ export const authSlice = createSlice({
         state.isError = false ;
         state.isSuccess = true;
         state.currentUser = action?.payload;
+        if (state?.isSuccess) {
+            toast.success("user created successfully");
+        }
     })
 
     .addCase(signUp.rejected,(state, action: PayloadAction<any>) => {
@@ -96,6 +106,9 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.currentUser = null;
+        if (state?.isError) {
+            toast.error("something went wrong");
+        }
         // state.message = action.error;
     })
 

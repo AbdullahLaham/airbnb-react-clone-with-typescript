@@ -143,19 +143,16 @@ const LoginModal = () => {
 
     // }
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-    try {
-      dispatch(login({...data}));
-      toast.success("user login successfully");
-      setIsLoading(false);
-      loginModal.onClose();
+      setIsLoading(true);
+      // const {name, email, password} = data;
+      try {
 
-    }  catch(error) {
-      toast.error("something went wrong");
-    } 
-    
-
-    
+        dispatch(login(data));
+        setIsLoading(false);
+          
+      }  catch(error) {
+        toast.error("something went wrong");
+      } 
   }
   return (
     <Modal

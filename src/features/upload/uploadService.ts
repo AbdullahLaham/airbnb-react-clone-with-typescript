@@ -11,9 +11,11 @@ export const uploadImage = async (data: any) => {
         return res.data;
 
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
+
+
 
 export const deleteImage = async (id: string) => {
     try {
@@ -22,8 +24,9 @@ export const deleteImage = async (id: string) => {
             localStorage.setItem('images', JSON.stringify(res.data))
         }
     } catch (error) {
-
+        console.log(error);
     }
 }
 
-export default {uploadImage, deleteImage}
+export default { uploadImage, deleteImage }
+

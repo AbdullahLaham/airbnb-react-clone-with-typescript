@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import listingsService from './listingsService';
+import { IListingsParams } from '../../types';
 
 type stateType = {
     currentUser: any,
@@ -29,11 +30,11 @@ export const createListing = createAsyncThunk('listings/create-listing', async (
 });
 
 
-export const getListings = createAsyncThunk('listings/all-listings', async (user: any, thunkAPI) => {
+export const getListings = createAsyncThunk('listings/all-listings', async (params: IListingsParams, thunkAPI) => {
   try {
       console.log('hello');
 
-      return await listingsService.getListings(user);
+      return await listingsService.getListings(params);
       
   } catch (error) {
       return thunkAPI.rejectWithValue(error)

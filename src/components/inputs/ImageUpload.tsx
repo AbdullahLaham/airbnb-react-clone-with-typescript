@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Dropzone from 'react-dropzone';
 import { TbPhotoPlus } from 'react-icons/tb';
 import { useDispatch } from 'react-redux';
@@ -20,15 +20,23 @@ interface ImageUploadProps {
 
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
-    const handleUpload = useCallback((result: any) => {
-        onChange(result?.info?.secure_url);
-    }, [onChange]);
+
+    
 
     const dispatch = useAppDispatch();
 
-    let {images} = useSelector((state: any) => state?.uploads);
+    // listing images 
+    const {images} = useSelector((state: any) => state?.uploads);
+
+    const handleUpload = useCallback(() => {
+        if (images[0]['url']) {
+          console.log(images[0]['url'], 'tttttttttttt')
+          onChange(images[0]['url']);
+        }
+    }, [onChange]);
 
 
+   
 
   return (
     // <CldUploadWidget onUpload={handleUpload} uploadPreset='vf8pusrs' options={{ maxFiles: 1 }} >
@@ -51,7 +59,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
     //     }}
     // </CldUploadWidget>
 
-<Dropzone onDrop={(acceptedFiles: any) => {dispatch(uploadImage(acceptedFiles)); onChange(acceptedFiles)}}>
+<Dropzone onDrop={(acceptedFiles: any) => {dispatch(uploadImage(acceptedFiles)); handleUpload()}}>
 {({getRootProps, getInputProps}: {getRootProps: any, getInputProps: any}) => (
   <section>
     
@@ -64,9 +72,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
             Click to upload
 
         </div>
-        {value && (
+        {images?.length && images[0]['url'] && (
             <div className='absolute inset-0 w-full h-full '>
-                <img alt='upload' src={value} style={{objectFit: 'cover'}} className='w-[100%] h-[100%]' />
+                <img alt='upload' src={images[0]['url']} style={{objectFit: 'cover'}} className='w-[100%] h-[100%]' />
             </div>
         )}
     </div>

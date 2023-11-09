@@ -1,5 +1,5 @@
 
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Modal from './Modal'
 import useRentModal from '../../hooks/useRentModal';
 import Heading from '../Heading';
@@ -17,12 +17,15 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../features/store';
 import {createListing} from '../../features/listings/listingsSlice';
+import { useSelector } from 'react-redux';
 interface RentModalProps {
     currentUser: any,
 }
 const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
     const rentModal = useRentModal();
     const navigate = useNavigate();
+
+    const { images } = useSelector((state: any) => state?.uploads);
 
     // dispatch
     const dispatch = useAppDispatch();
@@ -64,6 +67,11 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
     const bathroomCount = watch('bathroomCount');
     const roomCount = watch('roomCount')
     const imageSrc = watch('imageSrc');
+
+
+    useEffect(() => {
+        setValue('imageSrc', images?.length && images[0]['url']);
+      }, [images]);
 
 
     const setCustomValue = (id: string, value: any) => {
@@ -120,13 +128,13 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
         <div className='flex flex-col gap-8'>
             <Heading title='witch of these describes your place?' subtitle='Pick a Category' />
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto '>
-                {categories?.map(({label, icon}) => {
+                { categories?.map(({label, icon}) => {
                     return (
                         <div className='col-span-1'>
                             <CategoryInput label={label} icon={icon} selected={category === label ? true : false} onClick={(category) => setCustomValue('category', category)}  />
                         </div>
                     )
-                })}
+                }) }
             </div>
         </div>
     )
@@ -134,7 +142,7 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
         bodyContent = (
             <div className='flex flex-col gap-8'>
                 <Heading title='where is your place located ?' subtitle='Help guests find you!' />
-                <CountrySelect onChange={(value) => setCustomValue('location', value)} value={location} />
+                <CountrySelect onChange={(value) => {setCustomValue('location', value)}} value={location} />
                 <Map center={location?.latlng} />
             </div>
         )

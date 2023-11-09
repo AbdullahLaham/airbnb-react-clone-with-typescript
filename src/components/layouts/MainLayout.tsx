@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../navbar/Navbar';
 import LoginModal from '../modals/LoginModal';
 import RegisterModal from '../modals/RegisterModal';
@@ -6,10 +6,19 @@ import RentModal from '../modals/RentModal';
 import SearchModal from '../modals/SearchModal';
 import { useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
+import useLoginModal from '../../hooks/useLoginModal';
+import useRegisterModal from '../../hooks/useRegisterModal';
 
 const MainLayout = ({children}: {children: React.ReactNode}) => {
   const {currentUser} = useSelector((state: any) => state?.auth);
-
+  const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  useEffect(() => {
+    if (currentUser?.email) {
+      registerModal.onClose();
+      loginModal.onClose();
+    }
+  }, [currentUser])
   return (
     <div>
 

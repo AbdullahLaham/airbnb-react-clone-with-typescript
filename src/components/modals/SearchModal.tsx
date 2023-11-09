@@ -6,7 +6,7 @@ import {  useSearchParams } from 'react-router-dom';
 import { Range } from 'react-date-range';
 import CountrySelect, { CountrySelectValue } from '../inputs/CountrySelect';
 import qs from 'query-string';
-import { formatISO, setDate } from 'date-fns';
+import { formatISO } from 'date-fns';
 import Heading from '../Heading';
 import Calendar from '../inputs/Calendar';
 import Counter from '../inputs/Counter';
@@ -43,18 +43,25 @@ const SearchModal = () => {
     key: 'selection',
   });
 
+
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
   }, [])
+
   const onNext = useCallback(() => {
       setStep((value) => value + 1);
   }, [])
+
   const onSubmit = useCallback((async() => {
     if (step !== STEPS.INFO) {
       return onNext();
     }
     let currentQuery = {};
-    if (params) currentQuery = qs.parse(params.toString());
+
+    if (searchParams) currentQuery = qs.parse(searchParams.toString());
+
+    console.log(searchParams, 'currentQuery');
+    
     const updatedQuery: any = {
       ...currentQuery,
       locationValue: location?.value,
@@ -62,20 +69,25 @@ const SearchModal = () => {
       roomCount,
       bathroomCount,
     }
-    if (dateRange.startDate) updatedQuery.startDate = formatISO(dateRange.startDate)
+    console.log(updatedQuery, 'ttttt')
 
-    if (dateRange.endDate) updatedQuery.endDate = formatISO(dateRange.endDate)
+    if (dateRange.startDate) updatedQuery.startDate = formatISO(dateRange.startDate);
+
+    if (dateRange.endDate) updatedQuery.endDate = formatISO(dateRange.endDate);
 
     const url = qs.stringifyUrl({
       url: '/',
       query: updatedQuery
-    }, {skipNull: true});
+
+    }, {skipNull: true})
+
     setStep(STEPS.LOCATION);
     searchModal.onClose();
     navigate(url);
 
   }), [step, searchModal, location, navigate, guestCount, roomCount, bathroomCount, dateRange, onNext]);
   
+
   const actionLabel = useMemo(() => {
     if (step !== STEPS.INFO) {
       return 'Next'
@@ -83,6 +95,7 @@ const SearchModal = () => {
     return 'Search';
   }, [step])
 
+  
   const secondaryAtionLabel = useMemo(() => {
     if (step !== STEPS.LOCATION) {
       return 'Back'
@@ -96,7 +109,9 @@ const SearchModal = () => {
       <CountrySelect value={location} onChange={(value) => setLocation(value as CountrySelectValue)}  />
       <Map center={location?.latlng} />
     </div>
-  )
+  );
+
+
   if (step == STEPS.DATE) {
     bodyContent = (
       <div className='flex flex-col gap-8'>
@@ -104,7 +119,9 @@ const SearchModal = () => {
         <Calendar value={dateRange} onChange={(value) => setDateRange(value.selection)} />
       </div>
     )
-  }
+  };
+
+
   if (step == STEPS.INFO) {
     bodyContent = (
       <div className='flex flex-col gap-8'>
@@ -114,7 +131,9 @@ const SearchModal = () => {
         <Counter title='Bathrooms' subtitle='How many bathrooms do you need ? ' onChange={(value) => setBathroomCount(value)} value={bathroomCount} />
       </div>
     )
-  }
+  };
+
+
   return (
     <Modal isOpen={searchModal.isOpen} onClose={searchModal.onClose} onSubmit={onSubmit} title='Filters' body={bodyContent} secondaryActionLabel={secondaryAtionLabel} secondaryAction={step === STEPS.LOCATION ? undefined : onBack} actionLabel={actionLabel} />
         

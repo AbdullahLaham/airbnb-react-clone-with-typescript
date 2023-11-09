@@ -24,8 +24,8 @@ const CountrySelect: React.FC<CountrySelectProps> = ({value, onChange}) => {
 
   return (
     <div>
-        <Select placeholder='Anyware' isClearable options={getAll()} value={value} onChange={(value) => onChange(value as CountrySelectValue)} formatOptionLabel={(option : any) => (
-          <div className=" z-10
+        <Select className='z-100' placeholder='Anyware' isClearable options={getAll()} value={value} onChange={(value) => onChange(value as CountrySelectValue)} formatOptionLabel={(option : any) => (
+          <div className=" z-1000
           flex flex-row items-center gap-3" >
             <div>{option.flag}</div>
             <div>
