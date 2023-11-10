@@ -4,39 +4,51 @@ import API from "../MainApi"
 const getListings = async (params: IListingsParams) => {
     try {
 
-        const {
-            userId,
-            roomCount, 
-            guestCount, 
-            bathroomCount, 
-            locationValue,
-            startDate,
-            endDate,
-            category,
-          } = params;
-          const query: any = [];
+    const {
+        userId,
+        roomCount, 
+        guestCount, 
+        bathroomCount, 
+        locationValue,
+        startDate,
+        endDate,
+        category,
+        } = params;
 
-          if (userId) query.userId = userId;
-          if (roomCount) {
-            query.roomCount = {
-                gte: +roomCount,
-            }
-          };
-          if (bathroomCount) {
-            query.bathroomCount = {
-                gte: +bathroomCount
-            }
+        let query: string = '';
+
+        if (userId) query += `?userId=${userId}`;
+
+        if (roomCount) {
+        query += `&&roomCount=${roomCount}`
         };
+
+        if (bathroomCount) {
+        query += `&&bathroomCount=${bathroomCount}`
+        };
+
         if (guestCount) {
-            query.guestCount = {
-                gte: +guestCount
-            }
+            query += `&&guestCount=${guestCount}`
         };
 
-        
+        if (locationValue) {
+            query += `&&locationValue=${locationValue}`
+        };
+
+        if (startDate) {
+            query += `&&startDate=${startDate}`
+        };
+
+        if (endDate) {
+            query += `&&endDate=${endDate}`
+        };
+
+        if (category) {
+            query += `&&category=${category}`
+        };
 
 
-       const res =  await API.post('/listings/all-listings');
+       const res =  await API.get(`/listings/all-listings${query}`);
 
        if (res.data) {
         localStorage.setItem('listings', JSON.stringify(res.data));
@@ -52,7 +64,7 @@ const getListings = async (params: IListingsParams) => {
 
 const createListing = async (data: any) => {
     try {
-        const res =  await API.post('/listings/new-listing', {...data})
+        const res =  await API.post('/listings', {...data})
 
         if (res.data) {
             localStorage.setItem('listings', JSON.stringify(res.data));
@@ -65,4 +77,4 @@ const createListing = async (data: any) => {
     }
 }
 
-export default { getListings, createListing }
+export default { getListings, createListing };

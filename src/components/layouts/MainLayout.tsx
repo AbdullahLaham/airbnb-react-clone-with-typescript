@@ -28,8 +28,9 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
       <RentModal currentUser={currentUser} />
       <SearchModal />
       <Toaster />
-      {children}
-
+      <div className='pt-[12rem]'>
+        {children}
+      </div>
     </div>
   )
 }

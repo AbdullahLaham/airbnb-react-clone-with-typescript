@@ -53,7 +53,7 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
   }, [reservation?.endDate, reservation?.startDate, reservation]);
 
   return (
-    <div onClick={() => navigate(`listings/${data.id}`)} className='col-span-1 cursor-pointer group'>
+    <div onClick={() => navigate(`listings/${data?._id}`)} className='col-span-1 cursor-pointer group'>
         <div className='flex flex-col gap-2 w-full'>
           <div className='aspect-square w-full relative overflow-hidden rounded-xl '>
             <img src={data?.imageSrc} alt='listing' className=' object-cover h-full w-full group-hover:scale-110 transition'  />

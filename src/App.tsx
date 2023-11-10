@@ -8,6 +8,7 @@ import Reservations from './pages/Reservations';
 import Home from './pages/Home';
 import MainLayout from './components/layouts/MainLayout';
 import countries from 'world-countries';
+import ListingDetails from './pages/ListingDetails';
 function App() {
 
   console.log('ddd', countries)
@@ -19,6 +20,7 @@ function App() {
             <Route path='/properties' element={<Properties />} />
             <Route path='/trips' element={<Trips />} />
             <Route path='/reservations' element={<Reservations />} />
+            <Route path='/listings/:id' element={<ListingDetails />} />
         </Routes>
       </div>
     

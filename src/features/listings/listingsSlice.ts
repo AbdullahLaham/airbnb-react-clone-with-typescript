@@ -3,7 +3,8 @@ import listingsService from './listingsService';
 import { IListingsParams } from '../../types';
 
 type stateType = {
-    currentUser: any,
+    listings: any,
+    currentListing: any,
     isError: Boolean,
     isLoading: Boolean,
     isSuccess: Boolean,
@@ -11,7 +12,8 @@ type stateType = {
 }
 
 const initialState: stateType = {
-  currentUser: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || '') : {},
+  listings: [],
+  currentListing: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -42,6 +44,19 @@ export const getListings = createAsyncThunk('listings/all-listings', async (para
 
 })
 
+
+export const getCurrentListing = createAsyncThunk('listings/all-listings', async (params: IListingsParams, thunkAPI) => {
+  try {
+      console.log('hello');
+
+      return await listingsService.getListings(params);
+      
+  } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+  }
+
+})
+
 export const listingsSlice = createSlice({
   name: 'listings',
   initialState,
@@ -59,14 +74,14 @@ export const listingsSlice = createSlice({
         state.isLoading = false ;
         state.isError = false ;
         state.isSuccess = true;
-        state.currentUser = action?.payload;
+        state.listings = action?.payload;
     })
 
     .addCase(getListings.rejected,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = true;
         state.isSuccess = false;
-        state.currentUser = null;
+        state.listings = null;
         // state.message = action.error;
     })
 
@@ -80,14 +95,35 @@ export const listingsSlice = createSlice({
         state.isLoading = false ;
         state.isError = false ;
         state.isSuccess = true;
-        state.currentUser = action?.payload;
+        state.currentListing = action?.payload;
     })
 
     .addCase(createListing.rejected,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = true;
         state.isSuccess = false;
-        state.currentUser = null;
+        state.currentListing = null;
+        // state.message = action.error;
+    })
+
+
+
+
+    .addCase(createListing.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(createListing.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.currentListing = action?.payload;
+    })
+
+    .addCase(createListing.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
+        state.currentListing = null;
         // state.message = action.error;
     })
 
