@@ -99,7 +99,7 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
             try {
                 console.log(data, 'tt')
                 setIsLoading(true);
-                dispatch(createListing({...data}));
+                dispatch(createListing({...data, userId: currentUser?._id}));
                 reset();
                 setStep(STEPS.CATEGORY);
                 toast.success('Listing created!');
@@ -109,7 +109,7 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
                 setIsLoading(false);
                 toast.error('Something went wrong.');
             }
-  }
+        }
     }
 
     const actionLabel = useMemo(() => {
@@ -118,12 +118,16 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
         }
         return 'Next'
     }, [step]);
+
+
     const secondaryActionLabel = useMemo(() => {
         if (step === STEPS.CATEGORY) {
             return undefined
         } 
         return 'Back'
     }, [step]);
+
+    
     let bodyContent = (
         <div className='flex flex-col gap-8'>
             <Heading title='witch of these describes your place?' subtitle='Pick a Category' />

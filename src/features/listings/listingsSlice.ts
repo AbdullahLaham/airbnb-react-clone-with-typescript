@@ -45,11 +45,11 @@ export const getListings = createAsyncThunk('listings/all-listings', async (para
 })
 
 
-export const getCurrentListing = createAsyncThunk('listings/all-listings', async (params: IListingsParams, thunkAPI) => {
+export const getCurrentListing = createAsyncThunk('listings/current-listing', async (id: string, thunkAPI) => {
   try {
       console.log('hello');
 
-      return await listingsService.getListings(params);
+      return await listingsService.getCurrentListing(id);
       
   } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -109,17 +109,17 @@ export const listingsSlice = createSlice({
 
 
 
-    .addCase(createListing.pending,(state) => {state.isLoading = true }  )
+    .addCase(getCurrentListing.pending,(state) => {state.isLoading = true }  )
     
     
-    .addCase(createListing.fulfilled,(state, action: PayloadAction<any>) => {
+    .addCase(getCurrentListing.fulfilled,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = false ;
         state.isSuccess = true;
         state.currentListing = action?.payload;
     })
 
-    .addCase(createListing.rejected,(state, action: PayloadAction<any>) => {
+    .addCase(getCurrentListing.rejected,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = true;
         state.isSuccess = false;

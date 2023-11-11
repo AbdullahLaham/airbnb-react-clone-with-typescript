@@ -48,7 +48,7 @@ const getListings = async (params: IListingsParams) => {
         };
 
 
-       const res =  await API.get(`/listings/all-listings${query}`);
+       const res =  await API.get(`/listings${query}`);
 
        if (res.data) {
         localStorage.setItem('listings', JSON.stringify(res.data));
@@ -77,4 +77,13 @@ const createListing = async (data: any) => {
     }
 }
 
-export default { getListings, createListing };
+const getCurrentListing = async (id: string) => {
+    try {
+        const res = await API.get(`/listings/${id}`);
+        return res?.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export default { getListings, createListing, getCurrentListing };
