@@ -34,12 +34,16 @@ const ListingDetails = () => {
   const disabledDates = useMemo(() => {
     let dates: Date[] = [];
     reservations?.forEach((reservation: any) => {
-      const range = eachDayOfInterval({
-        start: new Date(reservation?.startDate),
-        end: new Date(reservation?.endDate),
-      });
-      dates = [...dates, ...range];
-      return dates;
+      if (reservation?.startDate && reservation?.endDate) {
+        const range = eachDayOfInterval({
+          start: new Date(reservation?.startDate),
+          end: new Date(reservation?.endDate)
+        });
+
+        dates = [...dates, ...range];
+        return dates;
+        
+      }
     })
   }, [reservations]);
 
@@ -99,6 +103,8 @@ const ListingDetails = () => {
         </div>
       </div>
     </Container>
+
+
 
   )
 }

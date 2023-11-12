@@ -1,7 +1,7 @@
 import { IListingsParams } from "../../types";
 import API from "../MainApi"
 
-const getListings = async (params: IListingsParams) => {
+const getReservations = async () => {
     try {
 
         const res = await API.get('/reservations');
@@ -14,8 +14,9 @@ const getListings = async (params: IListingsParams) => {
     }
 }
 
-const createListing = async (data: any) => {
+const createReservation = async (data: any) => {
     try {
+        console.log(data, 'reservation data');
         const res =  await API.post('/reservations', {...data});
 
         if (res.data) {
@@ -28,7 +29,14 @@ const createListing = async (data: any) => {
         console.log(error);                
     }
 }
+export const cancelReservation = async (id: string) => {
+    try {
+        
 
+    } catch (error) {
+
+    }
+}
 // const getCurrentListing = async (id: string) => {
 //     try {
 //         const res = await API.get(`/listings/${id}`);
@@ -38,4 +46,4 @@ const createListing = async (data: any) => {
 //     }
 // }
 
-export default { getListings, createListing };
+export default { getReservations, createReservation };

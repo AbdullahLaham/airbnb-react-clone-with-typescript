@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import listingsService from './reservationsService';
 import { IListingsParams } from '../../types';
+import reservationsService from './reservationsService';
 
 
 type stateType = {
@@ -22,10 +22,10 @@ const initialState: stateType = {
   message: '',
 }
 
-export const createReservation = createAsyncThunk('listings/create-listing', async (user: any, thunkAPI) => {
+export const createReservation = createAsyncThunk('listings/create-listing', async (data: any, thunkAPI) => {
   try {
-
-      return await listingsService.createListing(user);
+    
+      return await reservationsService.createReservation(data);
       
   } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -34,32 +34,29 @@ export const createReservation = createAsyncThunk('listings/create-listing', asy
 });
 
 
-export const getReservations = createAsyncThunk('listings/all-listings', async (params: IListingsParams, thunkAPI) => {
+
+export const getReservations = createAsyncThunk('listings/all-listings', async (thunkAPI) => {
   try {
       console.log('hello');
 
-      return await listingsService.getListings(params);
-      
+      return await reservationsService.getReservations();   
   } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      console.log(error);
   }
-
 })
 
 
+export const cancelReservation = createAsyncThunk('listings/all-listings', async (id: string, thunkAPI) => {
+  try {
+      console.log('hello');
+
+      return await reservationsService.cancelReservation(id);   
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 
-// export const getCurrentListing = createAsyncThunk('listings/current-listing', async (id: string, thunkAPI) => {
-//   try {
-//       console.log('hello');
-
-//       return await listingsService.getCurrentListing(id);
-      
-//   } catch (error) {
-//       return thunkAPI.rejectWithValue(error)
-//   }
-
-// })
 
 
 export const reservationsSlice = createSlice({
@@ -111,26 +108,6 @@ export const reservationsSlice = createSlice({
         // state.message = action.error;
     })
 
-
-
-
-    // .addCase(getCurrentListing.pending,(state) => {state.isLoading = true }  )
-    
-    
-    // .addCase(getCurrentListing.fulfilled,(state, action: PayloadAction<any>) => {
-    //     state.isLoading = false ;
-    //     state.isError = false ;
-    //     state.isSuccess = true;
-    //     state.currentListing = action?.payload;
-    // })
-
-    // .addCase(getCurrentListing.rejected,(state, action: PayloadAction<any>) => {
-    //     state.isLoading = false ;
-    //     state.isError = true;
-    //     state.isSuccess = false;
-    //     state.currentListing = null;
-    //     // state.message = action.error;
-    // })
 
   }
 })
