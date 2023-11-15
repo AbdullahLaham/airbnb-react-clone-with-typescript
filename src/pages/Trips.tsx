@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from '../features/store'
-import { getReservations } from '../features/reservations/reservationsSlice';
+import { cancelReservation, getReservations } from '../features/reservations/reservationsSlice';
 import { useSelector } from 'react-redux';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
@@ -8,6 +8,16 @@ import ListingCard from '../components/listings/ListingCard';
 import { useNavigate } from 'react-router-dom';
 
 const Trips = () => {
+
+//   if (userId) {
+//     query.userId = userId;
+// } 
+
+// if (authorId) {
+//     query.listing = {userId: authorId};
+// }
+
+
   // dispatch
   const dispatch = useAppDispatch();
 
@@ -30,7 +40,7 @@ const Trips = () => {
   }, [reservations])
 
   useEffect(() => {
-    dispatch(getReservations());
+    dispatch(getTrips());
   }, []);
 
   console.log(reservations, 'reservations');

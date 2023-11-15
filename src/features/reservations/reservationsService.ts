@@ -3,6 +3,18 @@ import API from "../MainApi"
 
 const getReservations = async () => {
     try {
+        const res = await API.get('/reservations');
+        if (res?.data) {
+            localStorage.setItem('reservations', JSON.stringify(res.data));
+        }
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getTrips = async () => {
+    try {
 
         const res = await API.get('/reservations');
         if (res?.data) {
@@ -31,10 +43,11 @@ const createReservation = async (data: any) => {
 }
 export const cancelReservation = async (id: string) => {
     try {
-        
+        const res = await API.delete(`/reservations/${id}`);
+        return res?.data;
 
     } catch (error) {
-
+        console.log(error);   
     }
 }
 // const getCurrentListing = async (id: string) => {
@@ -46,4 +59,4 @@ export const cancelReservation = async (id: string) => {
 //     }
 // }
 
-export default { getReservations, createReservation };
+export default { getReservations, createReservation, cancelReservation };

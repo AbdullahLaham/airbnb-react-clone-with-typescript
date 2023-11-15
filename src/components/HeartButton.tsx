@@ -15,7 +15,7 @@ interface HeartButtonProps {
 const HeartButton: React.FC<HeartButtonProps> = ({ listingId, currentUser }) => {
 
   
-  const {hasFavorited, toggleFavorite} = useFavorite({ listingId, currentUser })
+  const {hasFavorited, toggleFavorite} = useFavorite({ listingId, currentUser });
 
   return (
     <div className='relative hover:opacity-80 transition cursor-pointer ' onClick={toggleFavorite}>

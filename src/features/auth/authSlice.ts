@@ -46,11 +46,25 @@ export const logout = createAsyncThunk('auth/logout', async (thunkAPI) => {
       return await authService.logout();
       
   } catch (error) {
-      // return thunkAPI.rejectWithValue(error);
+      
   }
 
 })
+export const addListingToWishlist = createAsyncThunk('auth/addListingToWishlist', async (listingId: string, thunkAPI) => {
+    try {
+        return await authService.addListingToWishlist(listingId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
 
+export const deleteListingFromWishlist = createAsyncThunk('auth/removeListingFromWishlist', async (listingId: string, thunkAPI) => {
+    try {
+        return await authService.removeListingFromWishlist(listingId);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+})
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -128,6 +142,24 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.currentUser = null;
+        // state.message = action.error;
+    })
+
+
+    .addCase(addListingToWishlist.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(addListingToWishlist.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.currentUser = action?.payload;
+    })
+
+    .addCase(addListingToWishlist.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
         // state.message = action.error;
     })
 

@@ -23,7 +23,7 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
   const navigate = useNavigate();
   const {getByValue} = useCountries();
   const location = getByValue(data?.locationValue);
-  
+  console.log(data?.location, 'location')
   const handleCancel = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (disabled) {
@@ -39,6 +39,8 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
     return data?.price;
 
   }, [reservation, data.price]);
+
+  
   const reservationDate = useMemo(() => {
     if (!reservation) {
       return null;
@@ -53,7 +55,7 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
   }, [reservation?.endDate, reservation?.startDate, reservation]);
 
   return (
-    <div onClick={() => navigate(`listings/${data?._id}`)} className='col-span-1 cursor-pointer group'>
+    <div onClick={() => navigate(`/listings/${data?._id}`)} className='col-span-1 cursor-pointer group'>
         <div className='flex flex-col gap-2 w-full'>
           <div className='aspect-square w-full relative overflow-hidden rounded-xl '>
             <img src={data?.imageSrc} alt='listing' className=' object-cover h-full w-full group-hover:scale-110 transition'  />

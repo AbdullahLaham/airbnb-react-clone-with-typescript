@@ -6,12 +6,48 @@ import { safeUser } from "../types";
 
 import useLoginModal from "./useLoginModal";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../features/store";
+import { addListingToWishlist, deleteListingFromWishlist } from "../features/auth/authSlice";
 
 interface IUseFavorite {
   listingId: string;
   currentUser?: any, //safeUser | null
 }
 
+const useFav = ({listingId, currentUser}: IUseFavorite) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const loginModal = useLoginModal();
+  const dispatch = useAppDispatch();
+
+  const hasFavoritted = useMemo(() => {
+    const favoriteIds = currentUser?.favoriteIds || [];
+    if (favoriteIds?.length) {
+      return favoriteIds.includes(listingId);
+    }
+  }, [currentUser, listingId]);
+
+  const toggleFavorite = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+    try {
+      if (hasFavoritted) {
+        dispatch(addListingToWishlist(listingId));
+      }
+      else {
+        dispatch(deleteListingFromWishlist(listingId))
+      }
+      toast.success('Wishlist Updated Successfully');
+
+    } catch(error) {
+      toast.error('Something went wrong.');
+    }
+  }, [])
+
+
+}
 const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
 
   const location = useLocation();
@@ -33,17 +69,8 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
     }
 
     try {
-      let request;
-
-      if (hasFavorited) {
-        request = () => axios.delete(`/api/favorites/${listingId}`);
-      } else {
-        request = () => axios.post(`/api/favorites/${listingId}`);
-      }
-
-      await request();
       navigate(0);
-      toast.success('Success');
+      
     } catch (error) {
       toast.error('Something went wrong.');
     }

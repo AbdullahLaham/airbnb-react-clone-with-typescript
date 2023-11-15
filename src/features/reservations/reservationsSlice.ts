@@ -6,6 +6,7 @@ import reservationsService from './reservationsService';
 type stateType = {
     reservations: any,
     currentReservation: any,
+    canceledReservation :any,
     isError: Boolean,
     isLoading: Boolean,
     isSuccess: Boolean,
@@ -16,13 +17,14 @@ type stateType = {
 const initialState: stateType = {
   reservations: [],
   currentReservation: {},
+  canceledReservation: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: '',
 }
 
-export const createReservation = createAsyncThunk('listings/create-listing', async (data: any, thunkAPI) => {
+export const createReservation = createAsyncThunk('reservations/create-listing', async (data: any, thunkAPI) => {
   try {
     
       return await reservationsService.createReservation(data);
@@ -35,7 +37,7 @@ export const createReservation = createAsyncThunk('listings/create-listing', asy
 
 
 
-export const getReservations = createAsyncThunk('listings/all-listings', async (thunkAPI) => {
+export const getReservations = createAsyncThunk('reservations/get-reservations', async (thunkAPI) => {
   try {
       console.log('hello');
 
@@ -46,7 +48,7 @@ export const getReservations = createAsyncThunk('listings/all-listings', async (
 })
 
 
-export const cancelReservation = createAsyncThunk('listings/all-listings', async (id: string, thunkAPI) => {
+export const cancelReservation = createAsyncThunk('reservations/cancel-reservation', async (id: string, thunkAPI) => {
   try {
       console.log('hello');
 
@@ -105,6 +107,25 @@ export const reservationsSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.currentReservation = null;
+        // state.message = action.error;
+    })
+
+
+    .addCase(cancelReservation.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(cancelReservation.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.canceledReservation = action?.payload;
+    })
+
+    .addCase(cancelReservation.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
+        state.canceledReservation = null;
         // state.message = action.error;
     })
 
