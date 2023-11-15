@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from '../features/store'
-import { cancelReservation, getReservations } from '../features/reservations/reservationsSlice';
+import { cancelReservation, getReservations, getTrips } from '../features/reservations/reservationsSlice';
 import { useSelector } from 'react-redux';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
@@ -12,6 +12,8 @@ const Trips = () => {
 //   if (userId) {
 //     query.userId = userId;
 // } 
+
+
 
 // if (authorId) {
 //     query.listing = {userId: authorId};
@@ -26,7 +28,7 @@ const Trips = () => {
 
   const [deletingId, setDeletingId] = useState("");
 
-  const {reservations} = useSelector((state: any) => state?.reservations);
+  const {trips} = useSelector((state: any) => state?.reservations);
 
   const onCancel = useCallback((id: string) => {
     setDeletingId(id);
@@ -37,20 +39,20 @@ const Trips = () => {
       setDeletingId(id)
     }
 
-  }, [reservations])
+  }, [dispatch, navigate,])
 
   useEffect(() => {
     dispatch(getTrips());
-  }, []);
+  }, [dispatch]);
 
-  console.log(reservations, 'reservations');
+  console.log(trips, 'trips');
 
 
   return (
     <Container>
       <Heading title='Trips' subtitle='where you have been and where you are going!' />
       <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 '>
-        {reservations?.map((reservation: any) => {
+        {trips?.map((reservation: any) => {
           return (
             <ListingCard  key={reservation?._id} data={reservation?.listingId} reservation={reservation} actionId={reservation?._id} onAction={onCancel} disabled={deletingId == reservation?._id} actionLabel='Cancel Reservation'   />
           )

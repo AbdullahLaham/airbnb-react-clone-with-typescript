@@ -15,10 +15,9 @@ const getReservations = async () => {
 
 const getTrips = async () => {
     try {
-
-        const res = await API.get('/reservations');
+        const res = await API.get('/reservations/trips/');
         if (res?.data) {
-            localStorage.setItem('reservations', JSON.stringify(res.data));
+            localStorage.setItem('trips', JSON.stringify(res.data));
         }
         return res.data;
     } catch (error) {
@@ -59,4 +58,4 @@ export const cancelReservation = async (id: string) => {
 //     }
 // }
 
-export default { getReservations, createReservation, cancelReservation };
+export default { getReservations, createReservation, getTrips, cancelReservation };

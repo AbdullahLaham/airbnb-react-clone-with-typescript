@@ -5,6 +5,7 @@ import reservationsService from './reservationsService';
 
 type stateType = {
     reservations: any,
+    trips: any,
     currentReservation: any,
     canceledReservation :any,
     isError: Boolean,
@@ -16,6 +17,7 @@ type stateType = {
 
 const initialState: stateType = {
   reservations: [],
+  trips: [],
   currentReservation: {},
   canceledReservation: {},
   isError: false,
@@ -46,6 +48,15 @@ export const getReservations = createAsyncThunk('reservations/get-reservations',
       console.log(error);
   }
 })
+
+
+export const getTrips = createAsyncThunk('reservations/get-trips', async (thunkAPI) => {
+    try {  
+        return await reservationsService.getTrips();   
+    } catch (error) {
+        console.log(error);
+    }
+  })
 
 
 export const cancelReservation = createAsyncThunk('reservations/cancel-reservation', async (id: string, thunkAPI) => {
@@ -86,6 +97,25 @@ export const reservationsSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.reservations = null;
+        // state.message = action.error;
+    })
+
+
+    .addCase(getTrips.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(getTrips.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.trips = action?.payload;
+    })
+
+    .addCase(getTrips.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
+        state.trips = null;
         // state.message = action.error;
     })
 
