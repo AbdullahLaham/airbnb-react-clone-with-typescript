@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 
 type stateType = {
     currentUser: any,
+    listingAddedToWishlist: any,
+    listingDeletedFromWishlist: any,
     isError: Boolean,
     isLoading: Boolean,
     isSuccess: Boolean,
@@ -12,6 +14,8 @@ type stateType = {
 
 const initialState: stateType = {
   currentUser: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || '') : {},
+  listingAddedToWishlist: {},
+  listingDeletedFromWishlist: {},
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -162,6 +166,27 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         // state.message = action.error;
     })
+
+
+    .addCase(deleteListingFromWishlist.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(deleteListingFromWishlist.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.listingDeletedFromWishlist = action?.payload;
+    })
+
+    .addCase(deleteListingFromWishlist.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
+        // state.message = action.error;
+    })
+
+
+    
 
   }
 })

@@ -9,6 +9,7 @@ import HeartButton from '../HeartButton';
 import Button from '../Button';
 import { safeListing, safeReservation, safeUser } from '../../types';
 import {useNavigate} from 'react-router-dom'
+import { useSelector } from 'react-redux';
 interface ListingCardProps {
     data: any, // safeListing, 
     reservation?: any, // safeReservation,
@@ -19,11 +20,13 @@ interface ListingCardProps {
     currentUser?: any,
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, disabled, actionLabel, actionId = "", currentUser,}) => {
+const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, disabled, actionLabel, actionId = "",}) => {
   const navigate = useNavigate();
   const {getByValue} = useCountries();
   const location = getByValue(data?.locationValue);
-  console.log(data?.location, 'location')
+  const {currentUser} = useSelector((state: any) => state?.auth);
+  console.log(data, 'location');
+  
   const handleCancel = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (disabled) {
@@ -60,7 +63,7 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
           <div className='aspect-square w-full relative overflow-hidden rounded-xl '>
             <img src={data?.imageSrc} alt='listing' className=' object-cover h-full w-full group-hover:scale-110 transition'  />
             <div className='absolute top-3 right-3'>
-              <HeartButton listingId={data.id} currentUser={currentUser} />
+              <HeartButton listingId={data?._id} currentUser={currentUser} />
             </div>
           </div>
           <div className='font-semibold text-lg '>

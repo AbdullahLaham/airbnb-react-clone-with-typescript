@@ -14,18 +14,22 @@ interface IUseFavorite {
   currentUser?: any, //safeUser | null
 }
 
-const useFav = ({listingId, currentUser}: IUseFavorite) => {
+const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
+
   const location = useLocation();
   const navigate = useNavigate();
+
   const loginModal = useLoginModal();
   const dispatch = useAppDispatch();
-
-  const hasFavoritted = useMemo(() => {
+  const hasFavorited = useMemo(() => {
     const favoriteIds = currentUser?.favoriteIds || [];
+    
     if (favoriteIds?.length) {
       return favoriteIds.includes(listingId);
     }
   }, [currentUser, listingId]);
+
+  
 
   const toggleFavorite = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -33,7 +37,7 @@ const useFav = ({listingId, currentUser}: IUseFavorite) => {
       return loginModal.onOpen();
     }
     try {
-      if (hasFavoritted) {
+      if (hasFavorited) {
         dispatch(addListingToWishlist(listingId));
       }
       else {
@@ -44,44 +48,7 @@ const useFav = ({listingId, currentUser}: IUseFavorite) => {
     } catch(error) {
       toast.error('Something went wrong.');
     }
-  }, [])
-
-
-}
-const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const loginModal = useLoginModal();
-
-  const hasFavorited = useMemo(() => {
-    const list = currentUser?.favoriteIds || [];
-
-    return list.includes(listingId);
-  }, [currentUser, listingId]);
-
-  const toggleFavorite = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-
-    if (!currentUser) {
-      return loginModal.onOpen();
-    }
-
-    try {
-      navigate(0);
-      
-    } catch (error) {
-      toast.error('Something went wrong.');
-    }
-  }, 
-  [
-    currentUser, 
-    hasFavorited, 
-    listingId, 
-    loginModal,
-    location
-  ]);
+  }, [currentUser, hasFavorited, loginModal, listingId, location])
 
   return {
     hasFavorited,
