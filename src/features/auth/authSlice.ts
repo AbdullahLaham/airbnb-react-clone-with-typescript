@@ -6,6 +6,7 @@ type stateType = {
     currentUser: any,
     listingAddedToWishlist: any,
     listingDeletedFromWishlist: any,
+    wishlist: any,
     isError: Boolean,
     isLoading: Boolean,
     isSuccess: Boolean,
@@ -16,6 +17,7 @@ const initialState: stateType = {
   currentUser: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || '') : {},
   listingAddedToWishlist: {},
   listingDeletedFromWishlist: {},
+  wishlist: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -50,10 +52,17 @@ export const logout = createAsyncThunk('auth/logout', async (thunkAPI) => {
       return await authService.logout();
       
   } catch (error) {
-      
+    throw new Error("something went wrong");
   }
 
 })
+export const getWishlist = createAsyncThunk('auth/getWishlist', async (thunkAPI) => {
+    try {
+        return await authService.getWishlist();
+    } catch (error) {
+        throw new Error("something went wrong");
+    }
+});
 export const addListingToWishlist = createAsyncThunk('auth/addListingToWishlist', async (listingId: string, thunkAPI) => {
     try {
         return await authService.addListingToWishlist(listingId);
@@ -113,9 +122,9 @@ export const authSlice = createSlice({
         state.isLoading = false ;
         state.isError = false ;
         state.isSuccess = true;
-        state.currentUser = action?.payload;
+        // state.currentUser = action?.payload;
         if (state?.isSuccess) {
-            toast.success("user created successfully");
+            toast.success("user created successfully, please Login");
         }
     })
 
@@ -149,6 +158,23 @@ export const authSlice = createSlice({
         // state.message = action.error;
     })
 
+    .addCase(getWishlist.pending,(state) => {state.isLoading = true }  )
+    
+    
+    .addCase(getWishlist.fulfilled,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = false ;
+        state.isSuccess = true;
+        state.wishlist = action?.payload;
+    })
+
+    .addCase(getWishlist.rejected,(state, action: PayloadAction<any>) => {
+        state.isLoading = false ;
+        state.isError = true;
+        state.isSuccess = false;
+        // state.message = action.error;
+    })
+
 
     .addCase(addListingToWishlist.pending,(state) => {state.isLoading = true }  )
     
@@ -158,12 +184,14 @@ export const authSlice = createSlice({
         state.isError = false ;
         state.isSuccess = true;
         state.currentUser = action?.payload;
+        toast.success('Added To Wishlist Successfully');
     })
 
     .addCase(addListingToWishlist.rejected,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = true;
         state.isSuccess = false;
+        toast.error("something went wrong");
         // state.message = action.error;
     })
 
@@ -175,13 +203,15 @@ export const authSlice = createSlice({
         state.isLoading = false ;
         state.isError = false ;
         state.isSuccess = true;
-        state.listingDeletedFromWishlist = action?.payload;
+        state.currentUser = action?.payload;
+        toast.success('Deleted From Wishlist Successfully');
     })
 
     .addCase(deleteListingFromWishlist.rejected,(state, action: PayloadAction<any>) => {
         state.isLoading = false ;
         state.isError = true;
         state.isSuccess = false;
+        toast.error("something went wrong");
         // state.message = action.error;
     })
 
@@ -195,3 +225,4 @@ export const authSlice = createSlice({
 // export const { increment, decrement, incrementByAmount } = authSlice.actions
 
 export default authSlice.reducer;
+

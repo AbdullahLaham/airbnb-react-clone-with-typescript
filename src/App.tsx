@@ -22,9 +22,20 @@ function App() {
             <Route path='/reservations' element={<Reservations />} />
             <Route path='/listings/:id' element={<ListingDetails />} />
         </Routes>
+
+        
       </div>
     
   );
 }
 
 export default App;
+
+{/* <Routes>
+        <Route path='/' element={authData ? <Navigate to='home' /> : <Navigate to='auth' />} />
+        <Route path='/home' element={authData ? <HomePage /> : <Navigate to='../auth' />} />
+
+        <Route path='/profile/:id' element={authData ? <ProfilePage /> : <Navigate to='../auth' />} />
+        <Route path='/auth' element={authData ? <Navigate to='../home' /> : <AuthPage />} />
+        <Route path='/chat' element={authData ? <Chat  /> : <Navigate to='../auth' />} />
+</Routes> */}

@@ -34,12 +34,13 @@ const Trips = () => {
     setDeletingId(id);
     try {
       dispatch(cancelReservation(id));
+      dispatch(getTrips());
       navigate(0);
     } catch (error) {
       setDeletingId(id)
     }
 
-  }, [dispatch, navigate,])
+  }, [dispatch, navigate,]);
 
   useEffect(() => {
     dispatch(getTrips());

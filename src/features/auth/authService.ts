@@ -35,6 +35,17 @@ const signUp = async (user: any) => {
         throw new Error("something went wrong");            
     }
 }
+const getWishlist = async () => {
+    try {
+        const res = await API.get('/user/wishlist');
+        if (res?.data) {
+            return res?.data;
+        }
+
+    } catch (error) {
+        throw new Error("something went wrong");
+    }
+}
 const addListingToWishlist = async (listingId: string) => {
     try {
          const res = await API.put(`/user/addtoFavorites/${listingId}`);
@@ -55,4 +66,4 @@ const logout = async () => {
     localStorage.clear();
 }
 
-export default {login, signUp, logout, addListingToWishlist, removeListingFromWishlist};
+export default {login, signUp, logout, addListingToWishlist, removeListingFromWishlist, getWishlist};

@@ -8,42 +8,40 @@ import useLoginModal from "./useLoginModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../features/store";
 import { addListingToWishlist, deleteListingFromWishlist } from "../features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 interface IUseFavorite {
   listingId: string;
-  currentUser?: any, //safeUser | null
 }
 
-const useFavorite = ({ listingId, currentUser }: IUseFavorite) => {
+const useFavorite = ({ listingId }: IUseFavorite) => {
 
   const location = useLocation();
   const navigate = useNavigate();
-
+  const {currentUser} = useSelector((state: any) => state?.auth)
   const loginModal = useLoginModal();
   const dispatch = useAppDispatch();
+
+
   const hasFavorited = useMemo(() => {
     const favoriteIds = currentUser?.favoriteIds || [];
-    
-    if (favoriteIds?.length) {
-      return favoriteIds.includes(listingId);
-    }
+    return favoriteIds.includes(listingId);
   }, [currentUser, listingId]);
 
   
 
   const toggleFavorite = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    if (!currentUser) {
+    if (!currentUser?.email) {
       return loginModal.onOpen();
     }
     try {
-      if (hasFavorited) {
+      if (!hasFavorited) {
         dispatch(addListingToWishlist(listingId));
       }
       else {
         dispatch(deleteListingFromWishlist(listingId))
       }
-      toast.success('Wishlist Updated Successfully');
 
     } catch(error) {
       toast.error('Something went wrong.');

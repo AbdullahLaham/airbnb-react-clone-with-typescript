@@ -60,7 +60,7 @@ const RegisterModal = () => {
     const toggle = useCallback(() => {
       registerModal.onClose();
       loginModal.onOpen();
-    },[loginModal, registerModal])
+    },[loginModal, registerModal]);
 
     const bodyContent = (
         <div className='flex flex-col gap-2 '>
@@ -132,6 +132,10 @@ const RegisterModal = () => {
 
           dispatch(signUp(data));
           setIsLoading(false);
+          
+          registerModal.onClose();
+          loginModal.onOpen();
+
              
         }  catch(error) {
           toast.error("something went wrong");

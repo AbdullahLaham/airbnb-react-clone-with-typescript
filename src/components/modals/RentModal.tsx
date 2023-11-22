@@ -18,12 +18,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../features/store';
 import {createListing} from '../../features/listings/listingsSlice';
 import { useSelector } from 'react-redux';
+import useLoginModal from '../../hooks/useLoginModal';
 interface RentModalProps {
     currentUser: any,
 }
-const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
+const RentModal = () => {
     const rentModal = useRentModal();
+    const loginModal = useLoginModal();
     const navigate = useNavigate();
+    const {currentUser} = useSelector((state: any) => state?.auth)
 
     const { images } = useSelector((state: any) => state?.uploads);
 
@@ -75,6 +78,14 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
       }, [images]);
 
 
+    //   useEffect(() => {
+    //     if (!currentUser) {
+    //         rentModal.onClose();
+    //         loginModal.onOpen();
+    //     }
+    //   }, [])
+
+
     const setCustomValue = (id: string, value: any) => {
 
         setValue(id, value, {
@@ -98,14 +109,19 @@ const RentModal:React.FC<RentModalProps> = ({currentUser}) => {
             return onNext();
         } else {
             try {
-                console.log(data, 'tt')
-                setIsLoading(true);
-                dispatch(createListing({...data, userId: currentUser?._id}));
-                reset();
-                setStep(STEPS.CATEGORY);
-                toast.success('Listing created!');
-                setIsLoading(false);
-                navigate(0);
+                if (category && location && location && guestCount && roomCount && bathroomCount && imageSrc && currentUser?._id) {
+                    console.log(data, 'tt')
+                    setIsLoading(true);
+                    dispatch(createListing({...data, userId: currentUser?._id}));
+                    reset();
+                    setStep(STEPS.CATEGORY);
+                    toast.success('Listing created!');
+                    setIsLoading(false);
+                    navigate(0);
+                } else {
+                    toast.error("Please Fill all the required data");
+                }
+                
             } catch (error) {
                 setIsLoading(false);
                 toast.error('Something went wrong.');
