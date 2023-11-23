@@ -23,7 +23,7 @@ const Reservations = () => {
 
   const [deletingId, setDeletingId] = useState("");
 
-  const {reservations} = useSelector((state: any) => state?.reservations);
+  const {reservations, canceledReservation} = useSelector((state: any) => state?.reservations);
   const {currentUser} = useSelector((state: any) => state?.auth)
 
   const onCancel = useCallback((id: string) => {
@@ -39,7 +39,7 @@ const Reservations = () => {
 
   useEffect(() => {
     dispatch(getReservations());
-  }, []);
+  }, [canceledReservation]);
 
   console.log(reservations, 'reservations');
   if (!currentUser) {

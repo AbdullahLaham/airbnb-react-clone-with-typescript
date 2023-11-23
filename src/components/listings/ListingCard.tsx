@@ -28,8 +28,8 @@ const ListingCard: React.FC<ListingCardProps> = ({data, reservation, onAction, d
   const {currentUser} = useSelector((state: any) => state?.auth);
   console.log(data, 'location');
 
-  const {hasFavorited} = useFavorite({listingId: data?._id})
-  console.log(hasFavorited, 'hasFavorited');
+  const {hasFavorited} = useFavorite({listingId: data?._id});
+  console.log(hasFavorited, data?._id, 'hasFavorited');
   
   const handleCancel = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
